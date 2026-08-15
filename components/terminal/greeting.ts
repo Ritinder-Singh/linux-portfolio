@@ -1,12 +1,10 @@
-export const GREETING = `
- ╦ ╦╔═╗╦ ╦  ╔╦╗╦ ╦╔═╗╦═╗╔═╗
- ╠═╣║╣ ╚╦╝   ║ ╠═╣║╣ ╠╦╝║╣
- ╩ ╩╚═╝ ╩    ╩ ╩ ╩╚═╝╩╚═╚═╝
-
-  Backend Dev · Flutter · Python
-  ──────────────────────────────────────────────────
-  Welcome to my portfolio terminal.
-  Type 'help' to see available commands.
-  Type 'about' to learn about me.
-  Type 'projects' to see my work.
+export const GREETING = `  ✦ ritinder@portfolio — welcome
+  ────────────────────────────────────────
+  help        see all available commands
+  about       learn about me
+  projects    view my projects
+  skills      view my tech stack
+  contact     get in touch
+  theme       switch color theme
+  ────────────────────────────────────────
 `;

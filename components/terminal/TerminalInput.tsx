@@ -3,6 +3,16 @@
 import React from 'react';
 import { Theme } from '@/lib/themes';
 
+// Same high-contrast palette as TerminalOutput
+const T = {
+  cmd:    '#cba6f7',
+  path:   '#a6e3a1',
+  accent: '#89b4fa',
+  muted:  '#585b70',
+  white:  '#cdd6f4',
+  caret:  '#cba6f7',
+};
+
 interface TerminalInputProps {
   value: string;
   onChange: (value: string) => void;
@@ -20,46 +30,41 @@ export default function TerminalInput({
   currentDir,
   inputRef,
 }: TerminalInputProps) {
-  const prompt = `ritinder@portfolio:${currentDir}$ `;
-
   return (
     <>
       <style>{`
-        @keyframes blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0; }
-        }
-        .terminal-cursor {
-          animation: blink 1s step-end infinite;
-          display: inline-block;
-          width: 8px;
-          height: 1.1em;
-          background: ${theme.caret};
-          vertical-align: text-bottom;
-          margin-left: 1px;
-        }
+        @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
       `}</style>
       <div
         style={{
-          display: 'flex',
-          alignItems: 'center',
-          padding: '4px 12px 8px',
+          padding: '4px 16px 10px',
           backgroundColor: theme.bg,
           flexShrink: 0,
         }}
       >
-        <span
-          style={{
-            color: theme.primary,
-            fontFamily: 'Courier New, monospace',
-            fontSize: '13px',
-            whiteSpace: 'nowrap',
-            userSelect: 'none',
-          }}
-        >
-          {prompt}
-        </span>
-        <div style={{ position: 'relative', flex: 1, display: 'flex', alignItems: 'center' }}>
+        {/* Line 1 — P10k segments */}
+        <div style={{ display: 'flex', alignItems: 'center', marginBottom: 2, fontSize: 12, fontFamily: "'Fira Code','Cascadia Code','Courier New',monospace" }}>
+          <span style={{ color: T.muted }}>╭─</span>
+
+          <span style={{ backgroundColor: '#cba6f722', color: T.cmd, padding: '0 10px', fontWeight: 700 }}>
+            ✦ ritinder
+          </span>
+          <span style={{ color: T.cmd }}>❯</span>
+
+          <span style={{ backgroundColor: '#89b4fa22', color: T.accent, padding: '0 10px' }}>
+            portfolio
+          </span>
+          <span style={{ color: T.accent }}>❯</span>
+
+          <span style={{ backgroundColor: '#a6e3a122', color: T.path, padding: '0 10px' }}>
+            {currentDir}
+          </span>
+        </div>
+
+        {/* Line 2 — actual input */}
+        <div style={{ display: 'flex', alignItems: 'center', fontFamily: "'Fira Code','Cascadia Code','Courier New',monospace" }}>
+          <span style={{ color: T.muted, fontSize: 12, marginRight: 4 }}>╰─</span>
+          <span style={{ color: T.caret, fontSize: 15, marginRight: 8, fontWeight: 700 }}>❯</span>
           <input
             ref={inputRef}
             value={value}
@@ -69,11 +74,11 @@ export default function TerminalInput({
               background: 'transparent',
               border: 'none',
               outline: 'none',
-              color: theme.primary,
-              fontFamily: 'Courier New, monospace',
-              fontSize: '13px',
+              color: T.white,
+              fontFamily: "'Fira Code','Cascadia Code','Courier New',monospace",
+              fontSize: 13,
               width: '100%',
-              caretColor: theme.caret,
+              caretColor: T.caret,
             }}
             autoComplete="off"
             autoCorrect="off"

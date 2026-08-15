@@ -4,9 +4,8 @@ import { useState, useCallback, useRef, useEffect } from 'react';
 import { Line } from './TerminalOutput';
 import { processInput } from '@/lib/commands/registry';
 import { COMMAND_REGISTRY } from '@/lib/commands/registry';
-import { ThemeName } from '@/lib/types';
+import { ThemeName } from '@/lib/themes';
 import { THEMES, Theme } from '@/lib/themes';
-import { useDesktop } from '@/context/DesktopContext';
 import { completeInput } from './TabCompletion';
 import { GREETING } from './greeting';
 
@@ -62,9 +61,11 @@ export interface UseTerminalResult {
 }
 
 export function useTerminal(
-  executeRef?: React.MutableRefObject<((cmd: string) => void) | null>
+  executeRef?: React.MutableRefObject<((cmd: string) => void) | null>,
+  callbacks?: { onSetTheme?: (name: ThemeName) => void }
 ): UseTerminalResult {
-  const { openWindow, dispatch } = useDesktop();
+  const onSetThemeRef = useRef(callbacks?.onSetTheme);
+  useEffect(() => { onSetThemeRef.current = callbacks?.onSetTheme; });
   const [lines, setLines] = useState<Line[]>([]);
   const [input, setInput] = useState('');
   const [history, setHistory] = useState<string[]>(() => loadHistory());
@@ -89,8 +90,8 @@ export function useTerminal(
     if (typeof window !== 'undefined') {
       localStorage.setItem('terminal_theme', name);
     }
-    dispatch({ type: 'SET_THEME', payload: { theme: name } });
-  }, [dispatch]);
+    onSetThemeRef.current?.(name);
+  }, []);
 
   const addLines = useCallback((newLines: Line[]) => {
     setLines(prev => [...prev, ...newLines]);
@@ -178,19 +179,21 @@ export function useTerminal(
       case 'CHANGE_DIR':
         setCurrentDir(result.dir);
         break;
-      case 'OPEN_WINDOW':
-        openWindow({
-          id: result.windowType,
-          type: result.windowType,
-          title: result.title,
-          position: { x: 0, y: 0 },
-          size: { width: 800, height: 550 },
-          meta: result.meta,
-        });
-        addLines([mkLine('system', `Opening ${result.title}...`)]);
+      case 'OPEN_WINDOW': {
+        const sectionMap: Record<string, string> = {
+          about: '#about', skills: '#skills', projects: '#projects', contact: '#contact',
+        };
+        const anchor = sectionMap[result.windowType];
+        if (anchor) {
+          document.querySelector(anchor)?.scrollIntoView({ behavior: 'smooth' });
+          addLines([mkLine('system', `Scrolling to ${result.title}...`)]);
+        } else {
+          addLines([mkLine('system', `${result.title} is available in the navigation above.`)]);
+        }
         break;
+      }
     }
-  }, [addLines, currentDir, history, openWindow, setTheme]);
+  }, [addLines, currentDir, history, setTheme]);
 
   // Expose executeCommand via ref
   useEffect(() => {
