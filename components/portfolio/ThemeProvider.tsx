@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createContext, useContext, useState, useEffect } from 'react';
+import React, { createContext, useContext, useState } from 'react';
 import { THEMES, Theme, ThemeName } from '@/lib/themes';
 
 interface ThemeContextValue {
@@ -20,14 +20,14 @@ export function useTheme() {
 }
 
 export default function ThemeProvider({ children }: { children: React.ReactNode }) {
-  const [themeName, setThemeName] = useState<ThemeName>('catppuccin');
-
-  useEffect(() => {
+  const [themeName, setThemeName] = useState<ThemeName>(() => {
+    if (typeof window === 'undefined') return 'catppuccin';
     try {
       const saved = localStorage.getItem('terminal_theme') as ThemeName | null;
-      if (saved && saved in THEMES) setThemeName(saved);
+      if (saved && saved in THEMES) return saved;
     } catch {}
-  }, []);
+    return 'catppuccin';
+  });
 
   const setTheme = (name: ThemeName) => {
     setThemeName(name);

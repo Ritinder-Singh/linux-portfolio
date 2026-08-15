@@ -13,7 +13,8 @@ interface SiteConfig {
   github?: string;
   linkedin?: string;
   email?: string;
-  aboutStats?: string;
+  statsProjects?: string;
+  statsExperience?: string;
 }
 
 function SectionLabel({ children, color, dim }: { children: React.ReactNode; color: string; dim: string }) {
@@ -38,16 +39,15 @@ export default function About() {
       .catch(() => setLoaded(true));
   }, []);
 
-  const stats = (() => { try { return JSON.parse(cfg.aboutStats ?? '{}'); } catch { return {}; } })();
   const isUrl = (cfg.avatar ?? '').startsWith('http');
 
   const neofetchRows: { key: string; value: string }[] = [
-    cfg.tagline     ? { key: 'role',       value: cfg.tagline }           : null,
-    cfg.location    ? { key: 'location',   value: cfg.location }          : null,
-    stats.projects  ? { key: 'projects',   value: String(stats.projects) } : null,
-    stats.experience ? { key: 'experience', value: String(stats.experience) } : null,
-    cfg.github      ? { key: 'github',     value: cfg.github }            : null,
-    cfg.linkedin    ? { key: 'linkedin',   value: cfg.linkedin }          : null,
+    cfg.tagline        ? { key: 'role',       value: cfg.tagline }           : null,
+    cfg.location       ? { key: 'location',   value: cfg.location }          : null,
+    cfg.statsProjects  ? { key: 'projects',   value: cfg.statsProjects }     : null,
+    cfg.statsExperience? { key: 'experience', value: cfg.statsExperience }   : null,
+    cfg.github         ? { key: 'github',     value: cfg.github }            : null,
+    cfg.linkedin       ? { key: 'linkedin',   value: cfg.linkedin }          : null,
   ].filter(Boolean) as { key: string; value: string }[];
 
   return (

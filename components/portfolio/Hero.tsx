@@ -3,14 +3,31 @@
 import React, { useEffect, useState } from 'react';
 import { useTheme } from './ThemeProvider';
 
+interface SiteConfig {
+  name?: string;
+  tagline?: string;
+  bio?: string;
+  availableForWork?: string;
+}
+
 export default function Hero() {
   const { theme } = useTheme();
   const [mounted, setMounted] = useState(false);
+  const [cfg, setCfg] = useState<SiteConfig>({});
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 100);
     return () => clearTimeout(t);
   }, []);
+
+  useEffect(() => {
+    fetch('/api/content/config')
+      .then(r => r.json())
+      .then((data: SiteConfig) => setCfg(data))
+      .catch(() => {});
+  }, []);
+
+  const available = cfg.availableForWork !== 'false';
 
   return (
     <>
@@ -73,50 +90,52 @@ export default function Hero() {
               letterSpacing: '-0.02em',
             }}
           >
-            Ritinder Singh
+            {cfg.name ?? 'Ritinder Singh'}
           </h1>
 
-          {/* Role */}
-          <div
-            style={{
-              fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
-              color: theme.secondary,
-              marginBottom: 20,
-              fontWeight: 400,
-              letterSpacing: '0.01em',
-            }}
-          >
-            Full-Stack Engineer
-          </div>
+          {/* Role — from tagline config */}
+          {cfg.tagline && (
+            <div
+              style={{
+                fontSize: 'clamp(1rem, 2.5vw, 1.3rem)',
+                color: theme.secondary,
+                marginBottom: 20,
+                fontWeight: 400,
+                letterSpacing: '0.01em',
+              }}
+            >
+              {cfg.tagline}
+            </div>
+          )}
 
-          {/* Tagline */}
-          <p
-            style={{
-              color: theme.primary,
-              fontSize: 'clamp(14px, 2vw, 16px)',
-              marginBottom: 12,
-              lineHeight: 1.75,
-              maxWidth: 520,
-              opacity: 0.75,
-            }}
-          >
-            I turn ideas into working products — from database schema to deployed UI.
-            Whether you need a co-founder to build alongside, an engineer to join your team,
-            or someone to ship a side project fast, I'm that person.
-          </p>
+          {/* Bio — from config */}
+          {cfg.bio && (
+            <p
+              style={{
+                color: theme.primary,
+                fontSize: 'clamp(14px, 2vw, 16px)',
+                marginBottom: 12,
+                lineHeight: 1.75,
+                maxWidth: 520,
+                opacity: 0.75,
+              }}
+            >
+              {cfg.bio}
+            </p>
+          )}
 
-          {/* Status pill */}
+          {/* Availability pill — driven by config */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 40 }}>
             <span
               style={{
                 width: 8, height: 8, borderRadius: '50%',
-                backgroundColor: '#27c93f',
+                backgroundColor: available ? '#27c93f' : '#ff5f57',
                 display: 'inline-block',
-                boxShadow: '0 0 6px #27c93f',
+                boxShadow: available ? '0 0 6px #27c93f' : 'none',
               }}
             />
             <span style={{ color: theme.dim, fontSize: 12 }}>
-              Available for new opportunities
+              {available ? 'Available for new opportunities' : 'Not currently available'}
             </span>
           </div>
 

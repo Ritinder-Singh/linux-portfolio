@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { useTheme } from './ThemeProvider';
 
 interface SiteConfig {
@@ -52,22 +52,25 @@ function ContactModal({ open, onClose, theme }: ModalProps) {
   const [status, setStatus] = useState<'idle' | 'sending' | 'sent' | 'error'>('idle');
   const nameRef = useRef<HTMLInputElement>(null);
 
+  const handleClose = useCallback(() => {
+    onClose();
+    setStatus('idle');
+    setName('');
+    setEmail('');
+    setMessage('');
+  }, [onClose]);
+
   useEffect(() => {
-    if (open) {
-      setTimeout(() => nameRef.current?.focus(), 50);
-    } else {
-      setStatus('idle');
-      setName('');
-      setEmail('');
-      setMessage('');
-    }
+    if (!open) return;
+    const t = setTimeout(() => nameRef.current?.focus(), 50);
+    return () => clearTimeout(t);
   }, [open]);
 
   useEffect(() => {
-    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') onClose(); };
+    const handler = (e: KeyboardEvent) => { if (e.key === 'Escape') handleClose(); };
     if (open) window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
-  }, [open, onClose]);
+  }, [open, handleClose]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -111,7 +114,7 @@ function ContactModal({ open, onClose, theme }: ModalProps) {
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         padding: 20,
       }}
-      onClick={e => { if (e.target === e.currentTarget) onClose(); }}
+      onClick={e => { if (e.target === e.currentTarget) handleClose(); }}
     >
       <div
         style={{
@@ -133,7 +136,7 @@ function ContactModal({ open, onClose, theme }: ModalProps) {
           backgroundColor: theme.bgDark,
         }}>
           <div style={{ display: 'flex', gap: 6 }}>
-            <button onClick={onClose} style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#ff5f57', border: 'none', cursor: 'pointer', padding: 0 }} aria-label="Close" />
+            <button onClick={handleClose} style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: '#ff5f57', border: 'none', cursor: 'pointer', padding: 0 }} aria-label="Close" />
             <span style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: `${theme.border}`, display: 'inline-block' }} />
             <span style={{ width: 12, height: 12, borderRadius: '50%', backgroundColor: `${theme.border}`, display: 'inline-block' }} />
           </div>
@@ -148,7 +151,7 @@ function ContactModal({ open, onClose, theme }: ModalProps) {
               <div style={{ color: theme.primary, fontSize: 14, marginBottom: 6 }}>Message sent!</div>
               <div style={{ color: theme.dim, fontSize: 12, marginBottom: 24 }}>I&apos;ll get back to you soon.</div>
               <button
-                onClick={onClose}
+                onClick={handleClose}
                 style={{ backgroundColor: `${theme.primary}22`, border: `1px solid ${theme.primary}`, color: theme.primary, padding: '8px 20px', borderRadius: 6, fontFamily: 'inherit', fontSize: 13, cursor: 'pointer' }}
               >
                 close
@@ -203,7 +206,7 @@ function ContactModal({ open, onClose, theme }: ModalProps) {
               <div style={{ display: 'flex', gap: 10, justifyContent: 'flex-end', marginTop: 4 }}>
                 <button
                   type="button"
-                  onClick={onClose}
+                  onClick={handleClose}
                   style={{ backgroundColor: 'transparent', border: `1px solid ${theme.border}`, color: theme.dim, padding: '8px 18px', borderRadius: 6, fontFamily: 'inherit', fontSize: 13, cursor: 'pointer' }}
                 >
                   cancel
