@@ -18,7 +18,7 @@ export type ThemeName = 'dracula' | 'tokyo' | 'catppuccin' | 'nord' | 'green' | 
 
 export const THEMES: Record<ThemeName, Theme> = {
   dracula: {
-    name: 'Dracula',
+    name: 'Midnight',
     primary: '#bd93f9',
     secondary: '#ff79c6',
     dim: '#7b5ea7',
@@ -33,7 +33,7 @@ export const THEMES: Record<ThemeName, Theme> = {
     desktopBg: '#21222c',
   },
   tokyo: {
-    name: 'Tokyo Night',
+    name: 'Neon City',
     primary: '#7aa2f7',
     secondary: '#9ece6a',
     dim: '#4e6aad',
@@ -48,7 +48,7 @@ export const THEMES: Record<ThemeName, Theme> = {
     desktopBg: '#16161e',
   },
   catppuccin: {
-    name: 'Catppuccin',
+    name: 'Lavender',
     primary: '#cba6f7',
     secondary: '#89b4fa',
     dim: '#8b6fb5',
@@ -63,7 +63,7 @@ export const THEMES: Record<ThemeName, Theme> = {
     desktopBg: '#181825',
   },
   nord: {
-    name: 'Nord',
+    name: 'Arctic',
     primary: '#88c0d0',
     secondary: '#81a1c1',
     dim: '#5a8a99',
@@ -78,7 +78,7 @@ export const THEMES: Record<ThemeName, Theme> = {
     desktopBg: '#242933',
   },
   green: {
-    name: 'Matrix Green',
+    name: 'Hacker',
     primary: '#50fa7b',
     secondary: '#69ff47',
     dim: '#2d8c47',
@@ -93,7 +93,7 @@ export const THEMES: Record<ThemeName, Theme> = {
     desktopBg: '#050505',
   },
   amber: {
-    name: 'Amber',
+    name: 'Ember',
     primary: '#ffb86c',
     secondary: '#ff9e3b',
     dim: '#a06b30',
