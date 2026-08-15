@@ -69,7 +69,7 @@ export async function fetchGithubRepos(
     .map((r) => ({
       title: toTitleCase(r.name),
       description: r.description ?? '',
-      icon: LANGUAGE_ICONS[r.language ?? ''] ?? '💻',
+      icon: LANGUAGE_ICONS[r.language ?? ''] ?? '',
       techStack: r.topics,
       githubUrl: r.html_url,
       liveUrl: r.homepage || null,

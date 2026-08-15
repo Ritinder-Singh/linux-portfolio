@@ -105,7 +105,7 @@ function ProjectCard({ project, theme }: { project: Project; theme: ReturnType<t
           <span style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#ffbd2e', display: 'inline-block' }} />
           <span style={{ width: 10, height: 10, borderRadius: '50%', backgroundColor: '#27c93f', display: 'inline-block' }} />
         </div>
-        <span style={{ color: theme.dim, fontSize: 12, flex: 1 }}>{project.icon} {project.title}</span>
+        <span style={{ color: theme.dim, fontSize: 12, flex: 1 }}>{project.icon ? `${project.icon} ` : ''}{project.title}</span>
       </div>
 
       {/* Content */}
