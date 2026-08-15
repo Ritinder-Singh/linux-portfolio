@@ -5,12 +5,12 @@ import { ThemeName } from '@/lib/themes';
 import { useTheme } from './ThemeProvider';
 
 const THEME_DOTS: { name: ThemeName; color: string; label: string }[] = [
-  { name: 'dracula',    color: '#bd93f9', label: 'Dracula'    },
-  { name: 'tokyo',      color: '#7aa2f7', label: 'Tokyo'      },
-  { name: 'catppuccin', color: '#cba6f7', label: 'Catppuccin' },
-  { name: 'nord',       color: '#88c0d0', label: 'Nord'       },
-  { name: 'green',      color: '#50fa7b', label: 'Green'      },
-  { name: 'amber',      color: '#ffb86c', label: 'Amber'      },
+  { name: 'dracula',    color: '#bd93f9', label: 'Midnight'  },
+  { name: 'tokyo',      color: '#7aa2f7', label: 'Neon City' },
+  { name: 'catppuccin', color: '#cba6f7', label: 'Lavender'  },
+  { name: 'nord',       color: '#88c0d0', label: 'Arctic'    },
+  { name: 'green',      color: '#50fa7b', label: 'Hacker'    },
+  { name: 'amber',      color: '#ffb86c', label: 'Ember'     },
 ];
 
 export default function ThemePicker() {
