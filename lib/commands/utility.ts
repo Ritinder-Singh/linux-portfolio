@@ -1,5 +1,5 @@
 import { CommandDef, CommandResult } from './types';
-import { ThemeName } from '../types';
+import { ThemeName } from '../themes';
 
 const THEME_NAMES: ThemeName[] = ['dracula', 'tokyo', 'catppuccin', 'nord', 'green', 'amber'];
 

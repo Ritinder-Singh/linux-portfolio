@@ -1,5 +1,3 @@
-import { WindowType } from '../types';
-
 export type CommandCategory = 'Portfolio' | 'Filesystem' | 'Utility' | 'Fun';
 
 export type CommandResult =
@@ -9,7 +7,7 @@ export type CommandResult =
   | { type: 'MATRIX' }
   | { type: 'SNAKE' }
   | { type: 'THEME'; name: string }
-  | { type: 'OPEN_WINDOW'; windowType: WindowType; title: string; meta?: Record<string, unknown> }
+  | { type: 'OPEN_WINDOW'; windowType: string; title: string; meta?: Record<string, unknown> }
   | { type: 'CHANGE_DIR'; dir: string }
   | null;
 
@@ -18,7 +16,7 @@ export interface CommandDef {
   category: CommandCategory;
   description: string;
   handler: (args: string[]) => CommandResult;
-  appMenuMode: 'terminal' | 'gui' | 'hidden';
-  guiWindowType?: WindowType;
+  appMenuMode?: 'terminal' | 'gui' | 'hidden';
+  guiWindowType?: string;
   args?: string[];
 }
